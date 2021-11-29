@@ -134,7 +134,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
-} 
+}
 
 
 #  подключаем движок filebased.EmailBackend
@@ -145,6 +145,6 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 PAGE_COUNT = 10
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # CSRF_FAILURE_VIEW = 'core.views.csrf_failure'

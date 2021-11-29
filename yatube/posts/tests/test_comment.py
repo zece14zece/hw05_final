@@ -16,7 +16,7 @@ class TestComments(TestCase):
         self.GROUP = ObjectsCreate.group_create()
         self.POST = ObjectsCreate.post_create(
             self.GROUP, self.post_author, TEXT
-            )
+        )
         self.comments = reverse("posts:add_comment",
                                 kwargs={"post_id": self.POST.id})
 

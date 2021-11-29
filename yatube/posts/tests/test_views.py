@@ -284,9 +284,11 @@ class Testsubunsub(TestCase):
         self.assertEqual(post.text, post_text1)
 
     def test_unfollow_post_does_not_exists_in_follow_index(self):
-        user2 = User.objects.create_user(username="User2")
-        post = Post.objects.create(text="Проверка подписки", author=user2)
-        Follow.objects.create(user=user2, author=self.author_p)
-        response = self.authorized_client.get(reverse("posts:follow_index"))
-        post_text1 = response.context["page_obj"][0].text
+        user2 = User.objects.create_user(username='User2')
+        post = Post.objects.create(text='Проверка подписки', author=user2)
+        test_client = Client()
+        test_client.force_login(user2)
+        Follow.objects.create(user=user2, author=self.author)
+        response = test_client.get(reverse("posts:follow_index"))
+        post_text1 = response.context['page_obj'][0].text
         self.assertNotEqual(post.text, post_text1)

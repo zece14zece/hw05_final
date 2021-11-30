@@ -8,6 +8,13 @@ from posts.forms import CommentForm, PostForm
 from .models import Follow, Group, Post, User
 
 
+def _page_obj_gen(request, posts):
+    paginator = Paginator(posts, settings.PAGE_COUNT)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return page_obj
+
+
 def index(request):
     post_list = Post.objects.all()
     paginator = Paginator(post_list, settings.PAGE_COUNT)
@@ -22,14 +29,12 @@ def index(request):
 
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    form = PostForm(request.POST or None, files=request.FILES or None)
     posts = group.posts.all()
     paginator = Paginator(posts, settings.PAGE_COUNT)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     context = {
         "group": group,
-        "form": form,
         "page_obj": page_obj,
     }
     return render(request, "posts/group_list.html", context)
@@ -64,7 +69,6 @@ def post_detail(request, post_id):
 def post_create(request):
     form = PostForm(request.POST or None, files=request.FILES or None)
     if form.is_valid():
-        context = {"form": form}
         post = form.save(commit=False)
         post.author = request.user
         form.save()
@@ -103,13 +107,6 @@ def add_comment(request, post_id):
         comment.post = post
         comment.save()
     return redirect("posts:post_detail", post_id=post_id)
-
-
-def page_obj_gen(request, posts):
-    paginator = Paginator(posts, settings.PAGE_COUNT)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    return page_obj
 
 
 @login_required

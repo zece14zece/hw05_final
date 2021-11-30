@@ -116,9 +116,9 @@ class AnotherGroupTests(TestCase):
 
     def test_post_in_2_group_2(self):
         response = self.a_c_author.get(GROUP_1)
-        self.assertEqual(response.context["page_obj"][0].group.id, 1)
+        self.assertEqual(response.context["page_obj"][0].id, 1)
         response = self.a_c_author.get(GROUP_2)
-        self.assertEqual(response.context["page_obj"][0].group.id, 2)
+        self.assertEqual(response.context["page_obj"][0].id, 2)
 
     def test_index_correct_context(self):
         response = self.guest_client.get(reverse("posts:index"))
